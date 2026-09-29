@@ -1,0 +1,102 @@
+<div class="login-page">
+  <div class="login-frame">
+    <form class="login-card" [formGroup]="loginForm">
+
+      <h1>Start Students</h1>
+      <p>Faça seu login para continuar</p>
+
+      <label for="usuario">Usuário</label>
+
+      <div class="input-field">
+        <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" />
+        </svg>
+
+        <input id="usuario" type="text" placeholder="Digite seu usuário" formControlName="usuario" />
+      </div>
+
+      @if (loginForm.get('usuario')?.dirty && loginForm.get('usuario')?.invalid) {
+      <div class="field-error">
+
+        @if (loginForm.get('usuario')?.hasError('required')) {
+        <span>Usuário é obrigatório.</span>
+        }
+
+        @if (loginForm.get('usuario')?.hasError('minlength')) {
+        <span>Usuário deve ter no mínimo 8 caracteres.</span>
+        }
+
+        @if (loginForm.get('usuario')?.hasError('pattern')) {
+        <span>Use apenas letras e números.</span>
+        }
+
+      </div>
+      }
+
+      <label for="senha">Senha</label>
+
+      <div class="password-field">
+
+        <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+
+        <input id="senha" [type]="mostrarSenha ? 'text' : 'password'" placeholder="Digite sua senha"
+          formControlName="senha" />
+
+        <button type="button" class="password-toggle" (click)="alternarVisibilidadeSenha()"
+          [attr.aria-label]="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'">
+          @if (mostrarSenha) {
+          <svg class="password-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2.1 12s3.6-6 9.9-6 9.9 6 9.9 6-3.6 6-9.9 6-9.9-6-9.9-6Z" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2" />
+          </svg>
+          } @else {
+          <svg class="password-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 3l18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" />
+            <path
+              d="M9.9 5.2A9.8 9.8 0 0 1 12 5c6 0 9.5 7 9.5 7a15.8 15.8 0 0 1-2.2 3.1M6.7 6.7C4 8.5 2.5 12 2.5 12S6 19 12 19a9.7 9.7 0 0 0 4.2-.9"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          }
+        </button>
+      </div>
+
+      @if (loginForm.get('senha')?.dirty && loginForm.get('senha')?.invalid) {
+      <div class="field-error">
+
+        @if (loginForm.get('senha')?.hasError('required')) {
+        <span>Senha é obrigatória.</span>
+        }
+
+        @if (loginForm.get('senha')?.hasError('pattern')) {
+        <span>
+          A senha deve ter de 8 a 20 caracteres, incluindo letras e números.
+        </span>
+        }
+
+      </div>
+      }
+
+      <button type="button" (click)="fazerLogin()" [disabled]="loginForm.invalid || carregando()">
+        @if (carregando()) {
+        Entrando...
+        } @else {
+        Acessar
+        }
+      </button>
+
+      @if (mensagemErro()) {
+      <div class="login-error">
+        {{ mensagemErro() }}
+      </div>
+      }
+    </form>
+  </div>
+</div>

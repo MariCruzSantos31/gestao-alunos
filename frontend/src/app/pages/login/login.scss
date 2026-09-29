@@ -1,0 +1,175 @@
+:host {
+  display: block;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f3f5f9;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.login-frame {
+  width: 100%;
+  max-width: 500px;
+  padding: 18px;
+
+  background: #e1e6f5;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.login-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 48px;
+  box-sizing: border-box;
+  box-shadow: none;
+  
+}
+
+.login-card h1 {
+  margin: 0;
+  text-align: center;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: #252525;
+}
+
+.login-card p {
+  margin: 12px 0 32px;
+  text-align: center;
+
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: #5f6368;
+}
+
+.login-card label {
+  display: block;
+  margin: 0 0 8px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+.login-card input {
+  width: 100%;
+  height: 52px;
+  margin-bottom: 24px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.login-card button {
+  width: 100%;
+  height: 52px;
+  border: 0;
+  border-radius: 10px;
+  background: #c62828;
+  color: #ffffff;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.login-card button:disabled {
+  background: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.field-error {
+  margin-top: -16px;
+  margin-bottom: 20px;
+  color: #b91c1c;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.password-field {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.password-field input {
+  padding-right: 52px;
+  margin-bottom: 0px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 36px !important;
+  height: 36px !important;
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: 0;
+  background: transparent !important;
+  color: #6b7280 !important;
+  cursor: pointer;
+}
+
+.password-field input::-ms-reveal,
+.password-field input::-ms-clear {
+  display: none;
+}
+
+.password-icon {
+  width: 20px;
+  height: 20px;
+  
+}
+
+.login-card input::placeholder {
+  color: #6b7280;
+}
+
+.input-field {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.input-field input {
+  margin-bottom: 0;
+  padding-left: 48px;
+}
+
+.password-field input {
+  padding-left: 48px;
+  padding-right: 52px;
+}
+
+.field-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 20px;
+  height: 20px;
+
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.login-error {
+  margin-top: 12px;
+  text-align: center;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  color: #b91c1c;
+}
