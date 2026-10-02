@@ -1,0 +1,413 @@
+<main class="detalhes-page">
+
+  @if (mensagemSucesso()) {
+    <div class="aviso-sucesso">
+      ✓ {{ mensagemSucesso() }}
+    </div>
+  }
+
+  <div class="form-card">
+
+    <header class="page-header">
+      <button
+        type="button"
+        class="btn-voltar"
+        (click)="voltar()"
+      >
+        ← Edição do Aluno
+      </button>
+    </header>
+
+    @if (carregando()) {
+
+      <p class="mensagem">
+        Carregando dados do aluno...
+      </p>
+
+    } @else if (mensagemErro()) {
+
+      <p class="mensagem erro">
+        {{ mensagemErro() }}
+      </p>
+
+    } @else {
+
+      <form
+        class="dados-aluno"
+        (ngSubmit)="salvar()"
+      >
+
+        <div class="foto-area">
+
+          @if (foto) {
+            <img
+              [src]="foto"
+              alt="Foto do aluno"
+              class="foto-aluno"
+            >
+          } @else {
+            <div class="foto-placeholder">
+              👤
+            </div>
+          }
+
+        </div>
+
+
+        <div class="campo">
+
+          <label
+            class="rotulo"
+            for="nome"
+          >
+            Nome Completo
+          </label>
+
+          <div class="valor">
+
+            <svg
+              class="icone-campo"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                cx="12"
+                cy="8"
+                r="4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+
+              <path
+                d="M4 20c0-4 3.6-7 8-7s8 3 8 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+
+            <input
+              id="nome"
+              type="text"
+              name="nome"
+              [(ngModel)]="nome"
+              required
+            >
+
+          </div>
+
+          @if (nome && !nomeValido()) {
+            <span class="campo-erro">
+              Nome deve conter de 3 a 120 caracteres.
+            </span>
+          }
+
+        </div>
+
+
+        <div class="campo">
+
+          <label
+            class="rotulo"
+            for="cpf"
+          >
+            CPF
+          </label>
+
+          <div class="valor somente-leitura">
+
+            <svg
+              class="icone-campo"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <rect
+                x="3"
+                y="5"
+                width="18"
+                height="14"
+                rx="2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+
+              <path
+                d="M7 9h10M7 13h6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+
+            <input
+              id="cpf"
+              type="text"
+              name="cpf"
+              [value]="cpf"
+              readonly
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="campo">
+
+          <label
+            class="rotulo"
+            for="email"
+          >
+            E-mail
+          </label>
+
+          <div class="valor">
+
+            <svg
+              class="icone-campo"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <rect
+                x="3"
+                y="5"
+                width="18"
+                height="14"
+                rx="2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+
+              <path
+                d="m4 7 8 6 8-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+
+            <input
+              id="email"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+            >
+
+          </div>
+
+          @if (email && !emailValido()) {
+            <span class="campo-erro">
+              E-mail inválido.
+            </span>
+          }
+
+        </div>
+
+
+        <div class="campo">
+
+          <label
+            class="rotulo"
+            for="telefone"
+          >
+            Telefone
+          </label>
+
+          <div class="valor">
+
+            <svg
+              class="icone-campo"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 3h4l2 5-2.5 2.5a14 14 0 0 0 4 4L16 12l5 2v4c0 1.1-.9 2-2 2C10.7 20 4 13.3 4 5c0-1.1.9-2 2-2Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+
+            <input
+              id="telefone"
+              type="text"
+              name="telefone"
+              [(ngModel)]="telefone"
+              required
+            >
+
+          </div>
+
+          @if (telefone && !telefoneValido()) {
+            <span class="campo-erro">
+              Telefone deve conter DDD e número.
+            </span>
+          }
+
+        </div>
+
+
+        <div class="campo">
+
+          <label
+            class="rotulo"
+            for="matricula"
+          >
+            Matrícula
+          </label>
+
+          <div class="valor somente-leitura">
+
+            <svg
+              class="icone-campo"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M5 4h14v16H5z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+
+              <path
+                d="M8 8h8M8 12h8M8 16h5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+
+            <input
+              id="matricula"
+              type="text"
+              name="matricula"
+              [value]="matricula"
+              readonly
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="campo status-campo">
+
+          <span class="rotulo">
+            Status
+          </span>
+
+          <div class="status-opcoes">
+
+            <label class="status-opcao">
+              <input
+                type="radio"
+                name="status"
+                value="ATIVO"
+                [(ngModel)]="status"
+              >
+              <span>Ativo</span>
+            </label>
+
+            <label class="status-opcao">
+              <input
+                type="radio"
+                name="status"
+                value="INATIVO"
+                [(ngModel)]="status"
+              >
+              <span>Inativo</span>
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="btn-cancelar"
+            (click)="voltar()"
+            [disabled]="salvando()"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn-salvar"
+            [disabled]="
+              !temAlteracoes() ||
+              !formularioValido() ||
+              salvando()
+            "
+          >
+            @if (salvando()) {
+              Salvando...
+            } @else {
+              Salvar Alterações
+            }
+          </button>
+
+        </div>
+
+      </form>
+
+    }
+
+  </div>
+
+
+  @if (mostrarModalSaida()) {
+
+    <div class="modal-fundo">
+
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal"
+      >
+
+        <h2 id="titulo-modal">
+          Alterações não salvas
+        </h2>
+
+        <p>
+          Existem alterações não salvas.
+          Deseja sair mesmo assim?
+        </p>
+
+        <div class="modal-acoes">
+
+          <button
+            type="button"
+            class="modal-cancelar"
+            (click)="fecharModalSaida()"
+          >
+            Continuar editando
+          </button>
+
+          <button
+            type="button"
+            class="modal-sair"
+            (click)="sairSemSalvar()"
+          >
+            Sair sem salvar
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</main>

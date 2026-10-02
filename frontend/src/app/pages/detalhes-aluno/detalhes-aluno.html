@@ -1,0 +1,181 @@
+<main class="detalhes-page">
+
+  <div class="form-card">
+
+    <header class="page-header">
+      <button
+        type="button"
+        class="btn-voltar"
+        (click)="voltar()">
+        ← Detalhes do Aluno
+      </button>
+    </header>
+
+    @if (carregando()) {
+
+      <p class="mensagem">
+        Carregando dados do aluno...
+      </p>
+
+    } @else if (mensagemErro()) {
+
+      <p class="mensagem erro">
+        {{ mensagemErro() }}
+      </p>
+
+    } @else if (aluno()) {
+
+      <div class="foto-area">
+
+        @if (aluno()?.foto) {
+
+          <img
+            [src]="aluno()?.foto"
+            alt="Foto do aluno"
+            class="foto-aluno">
+
+        } @else {
+
+          <div class="foto-placeholder">
+            👤
+          </div>
+
+        }
+
+      </div>
+
+
+      <div class="dados-aluno">
+
+        <div class="campo">
+          <span class="rotulo">Nome Completo</span>
+
+          <div class="valor">
+            <svg class="icone-campo" viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+            </svg>
+
+            {{ aluno()?.nome }}
+          </div>
+        </div>
+
+
+        <div class="campo">
+          <span class="rotulo">CPF</span>
+
+          <div class="valor">
+            <svg class="icone-campo" viewBox="0 0 24 24">
+              <rect x="3" y="5" width="18" height="14" rx="2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+              <path d="M7 9h10M7 13h6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+            </svg>
+
+            {{ aluno()?.cpf }}
+          </div>
+        </div>
+
+
+        <div class="campo">
+          <span class="rotulo">E-mail</span>
+
+          <div class="valor">
+            <svg class="icone-campo" viewBox="0 0 24 24">
+              <rect x="3" y="5" width="18" height="14" rx="2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+              <path d="m4 7 8 6 8-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+            </svg>
+
+            {{ aluno()?.email }}
+          </div>
+        </div>
+
+
+        <div class="campo">
+          <span class="rotulo">Telefone</span>
+
+          <div class="valor">
+            <svg class="icone-campo" viewBox="0 0 24 24">
+              <path
+                d="M6 3h4l2 5-2.5 2.5a14 14 0 0 0 4 4L16 12l5 2v4c0 1.1-.9 2-2 2C10.7 20 4 13.3 4 5c0-1.1.9-2 2-2Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+            </svg>
+
+            {{ aluno()?.telefone }}
+          </div>
+        </div>
+
+
+        <div class="campo">
+          <span class="rotulo">Matrícula</span>
+
+          <div class="valor">
+            <svg class="icone-campo" viewBox="0 0 24 24">
+              <path
+                d="M5 4h14v16H5z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+              <path d="M8 8h8M8 12h8M8 16h5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"/>
+            </svg>
+
+            {{ aluno()?.matricula }}
+          </div>
+        </div>
+
+
+        <div class="campo status-campo">
+
+          <span class="rotulo">Status</span>
+
+          <span class="status">
+            <span
+              class="status-ponto"
+              [class.inativo]="aluno()?.status === 'INATIVO'">
+            </span>
+
+            {{ aluno()?.status === 'ATIVO' ? 'Ativo' : 'Inativo' }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn-voltar-final"
+          (click)="voltar()">
+          Voltar
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+</main>

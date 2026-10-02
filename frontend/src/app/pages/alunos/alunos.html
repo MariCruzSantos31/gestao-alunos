@@ -1,0 +1,408 @@
+<main
+  class="alunos-page"
+  [attr.aria-busy]="carregando()"
+>
+
+  <header class="page-header">
+
+    <h1>Alunos</h1>
+
+    <div class="header-actions">
+
+      @if (ehAdmin) {
+        <button
+          type="button"
+          class="btn-new-student"
+          title="Novo Aluno"
+          (click)="novoAluno()"
+        >
+          Novo Aluno
+        </button>
+      }
+
+      <button
+        type="button"
+        class="btn-logout"
+        title="Sair"
+        (click)="sair()"
+      >
+        Sair
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="search-area">
+
+    <div class="search-field">
+
+      <svg
+        class="search-icon"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <path d="M20 20l-4-4" />
+      </svg>
+
+      <input
+        #campoBusca
+        type="search"
+        placeholder="Buscar por nome ou matrícula..."
+        aria-label="Buscar aluno por nome ou matrícula"
+        (input)="pesquisarAoDigitar(campoBusca.value)"
+        (keyup.enter)="pesquisar(campoBusca.value)"
+      >
+
+    </div>
+
+
+    <div class="status-filter">
+
+      <button
+        type="button"
+        class="status-filter-button"
+        (click)="alternarFiltro()"
+        [attr.aria-expanded]="filtroAberto()"
+        aria-haspopup="menu"
+        aria-label="Filtrar alunos por status"
+      >
+        <span>
+          Status: {{ rotuloStatus() }}
+        </span>
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          [class.open]="filtroAberto()"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+
+
+      @if (filtroAberto()) {
+        <div
+          class="status-filter-menu"
+          role="menu"
+        >
+
+          @if (statusSelecionado() !== 'TODOS') {
+            <button
+              type="button"
+              role="menuitem"
+              (click)="selecionarStatus('TODOS')"
+            >
+              Todos
+            </button>
+          }
+
+          @if (statusSelecionado() !== 'ATIVO') {
+            <button
+              type="button"
+              role="menuitem"
+              (click)="selecionarStatus('ATIVO')"
+            >
+              Ativos
+            </button>
+          }
+
+          @if (statusSelecionado() !== 'INATIVO') {
+            <button
+              type="button"
+              role="menuitem"
+              (click)="selecionarStatus('INATIVO')"
+            >
+              Inativos
+            </button>
+          }
+
+        </div>
+      }
+
+    </div>
+
+  </div>
+
+
+  <div class="table-area">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Matrícula</th>
+          <th>Nome</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @if (carregando()) {
+
+          <tr>
+            <td
+              colspan="4"
+              class="table-message"
+            >
+              Carregando alunos...
+            </td>
+          </tr>
+
+        } @else if (mensagemErro()) {
+
+          <tr>
+            <td
+              colspan="4"
+              class="table-message"
+            >
+              <p>{{ mensagemErro() }}</p>
+
+              <button
+                type="button"
+                (click)="carregarAlunos()"
+              >
+                Tentar novamente
+              </button>
+            </td>
+          </tr>
+
+        } @else {
+
+          @for (aluno of alunos(); track aluno.id) {
+
+            <tr>
+
+              <td>{{ aluno.matricula }}</td>
+
+              <td>{{ aluno.nome }}</td>
+
+              <td>
+                <span
+                  [class.status-active]="aluno.status === 'ATIVO'"
+                  [class.status-inactive]="aluno.status === 'INATIVO'"
+                >
+                  {{ aluno.status === 'ATIVO' ? 'Ativo' : 'Inativo' }}
+                </span>
+              </td>
+
+              <td>
+
+                <div class="actions">
+
+                  <button
+                    type="button"
+                    class="btn-view"
+                    aria-label="Ver detalhes"
+                    title="Ver detalhes"
+                    (click)="verDetalhes(aluno.id)"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                      />
+
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="3"
+                      />
+                    </svg>
+                  </button>
+
+
+                  @if (ehAdmin) {
+
+                    <button
+                      type="button"
+                      class="btn-edit"
+                      aria-label="Editar"
+                      title="Editar"
+                      (click)="editarAluno(aluno.id)"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M4 20h4L19 9l-4-4L4 16v4Z"
+                        />
+
+                        <path d="M13.5 6.5l4 4" />
+                      </svg>
+                    </button>
+
+
+                    <button
+                      type="button"
+                      class="btn-delete"
+                      aria-label="Excluir"
+                      title="Excluir"
+                      (click)="abrirModalExclusao(aluno.id)"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M4 7h16" />
+                        <path d="M9 7V4h6v3" />
+                        <path d="M7 7l1 13h8l1-13" />
+                        <path d="M10 11v5" />
+                        <path d="M14 11v5" />
+                      </svg>
+                    </button>
+
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          @if (alunos().length === 0) {
+
+            <tr>
+              <td
+                colspan="4"
+                class="table-message"
+              >
+                Nenhum aluno encontrado.
+              </td>
+            </tr>
+
+          }
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  @if (!carregando() && !mensagemErro()) {
+
+    <p class="total-results">
+
+      @if (totalElementos() === 0) {
+        Exibindo 0 de 0 registros
+      } @else {
+        Exibindo
+        {{ (paginaAtual() * tamanhoPagina) + 1 }}–{{ (paginaAtual() * tamanhoPagina) + alunos().length }}
+        de {{ totalElementos() }} registros
+      }
+
+    </p>
+
+  }
+
+
+  @if (!carregando() && !mensagemErro() && totalPaginas() > 0) {
+
+    <nav
+      class="pagination"
+      aria-label="Paginação de alunos"
+    >
+
+      <button
+        type="button"
+        (click)="irParaPagina(paginaAtual() - 1)"
+        [disabled]="paginaAtual() === 0"
+        aria-label="Página anterior"
+      >
+        ‹
+      </button>
+
+
+      @for (pagina of paginas(); track pagina) {
+
+        <button
+          type="button"
+          (click)="irParaPagina(pagina)"
+          [disabled]="carregando()"
+          [class.active]="paginaAtual() === pagina"
+          [attr.aria-current]="paginaAtual() === pagina ? 'page' : null"
+        >
+          {{ pagina + 1 }}
+        </button>
+
+      }
+
+
+      <button
+        type="button"
+        (click)="irParaPagina(paginaAtual() + 1)"
+        [disabled]="paginaAtual() + 1 >= totalPaginas()"
+        aria-label="Próxima página"
+      >
+        ›
+      </button>
+
+    </nav>
+
+  }
+
+
+  @if (modalExclusao()) {
+
+    <div
+      class="modal-overlay"
+      role="presentation"
+      (click)="fecharModalExclusao()"
+    >
+
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal-exclusao"
+        (click)="$event.stopPropagation()"
+      >
+
+        <h2 id="titulo-modal-exclusao">
+          Excluir aluno
+        </h2>
+
+        <p>
+          Deseja realmente excluir este aluno?
+        </p>
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="modal-cancelar"
+            (click)="fecharModalExclusao()"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="button"
+            class="modal-confirmar"
+            (click)="confirmarExclusao()"
+          >
+            Excluir
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</main>
