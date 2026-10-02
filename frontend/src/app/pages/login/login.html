@@ -14,10 +14,10 @@
             stroke-linecap="round" />
         </svg>
 
-        <input id="usuario" type="text" placeholder="Digite seu usuário" formControlName="usuario" />
+        <input id="usuario" type="text" placeholder="Digite seu usuário" formControlName="usuario" (input)="loginForm.get('usuario')?.markAsUntouched()" />
       </div>
 
-      @if (loginForm.get('usuario')?.dirty && loginForm.get('usuario')?.invalid) {
+      @if (loginForm.get('usuario')?.touched && loginForm.get('usuario')?.invalid) {
       <div class="field-error">
 
         @if (loginForm.get('usuario')?.hasError('required')) {
@@ -45,7 +45,7 @@
         </svg>
 
         <input id="senha" [type]="mostrarSenha ? 'text' : 'password'" placeholder="Digite sua senha"
-          formControlName="senha" />
+          formControlName="senha"  (input)="loginForm.get('senha')?.markAsUntouched()" />
 
         <button type="button" class="password-toggle" (click)="alternarVisibilidadeSenha()"
           [attr.aria-label]="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'">
@@ -68,7 +68,7 @@
         </button>
       </div>
 
-      @if (loginForm.get('senha')?.dirty && loginForm.get('senha')?.invalid) {
+      @if (loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid) {
       <div class="field-error">
 
         @if (loginForm.get('senha')?.hasError('required')) {

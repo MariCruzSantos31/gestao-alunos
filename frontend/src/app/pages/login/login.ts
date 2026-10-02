@@ -1,5 +1,8 @@
 import { Component, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {
+  ActivatedRoute,
+  Router
+} from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -7,10 +10,7 @@ import {
   Validators
 } from '@angular/forms';
 
-interface LoginResponse {
-  token: string;
-  perfil: string;
-}
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -23,17 +23,18 @@ export class Login {
   loginForm: FormGroup;
 
   mostrarSenha = false;
-
   carregando = signal(false);
-
   mensagemErro = signal('');
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
 
     this.loginForm = this.formBuilder.group({
+
       usuario: [
         '',
         [
@@ -49,10 +50,21 @@ export class Login {
           Validators.required,
           Validators.minLength(8),
           Validators.maxLength(20),
-          Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d).+$/)
+          Validators.pattern(
+            /^(?=.*[A-Za-z])(?=.*\d).+$/
+          )
         ]
       ]
     });
+
+    const sessao =
+      this.route.snapshot.queryParamMap.get('sessao');
+
+    if (sessao === 'expirada') {
+      this.mensagemErro.set(
+        'Sua sessão expirou. Faça login novamente.'
+      );
+    }
   }
 
   alternarVisibilidadeSenha(): void {
@@ -61,23 +73,21 @@ export class Login {
 
   fazerLogin(): void {
 
-    if (this.loginForm.invalid || this.carregando()) {
+    if (
+      this.loginForm.invalid ||
+      this.carregando()
+    ) {
       return;
     }
 
     this.carregando.set(true);
     this.mensagemErro.set('');
 
-    const dadosLogin = {
-      username: this.loginForm.value.usuario,
-      password: this.loginForm.value.senha
-    };
+    const usuario = this.loginForm.value.usuario;
+    const senha = this.loginForm.value.senha;
 
-    this.http
-      .post<LoginResponse>(
-        'http://localhost:8080/api/auth/login',
-        dadosLogin
-      )
+    this.authService
+      .fazerLogin(usuario, senha)
       .subscribe({
 
         next: (resposta) => {
@@ -93,6 +103,8 @@ export class Login {
           );
 
           this.carregando.set(false);
+
+          this.router.navigate(['/alunos']);
         },
 
         error: () => {
