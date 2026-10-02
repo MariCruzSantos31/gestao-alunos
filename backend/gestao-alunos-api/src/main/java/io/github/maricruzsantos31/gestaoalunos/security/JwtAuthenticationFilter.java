@@ -82,6 +82,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                  | IllegalArgumentException
                  | AuthenticationException e) {
 
+            System.out.println("ERRO JWT: " + e.getMessage());
+
             SecurityContextHolder.clearContext();
         }
 
